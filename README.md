@@ -1,5 +1,1 @@
-# ZeroTrustArchitecture
-# ZeroTrustArchitecture
-# ZeroTrustArchitecture
-# ZeroTrustArchitecture
-# ZeroTrust
+docker compose up -d

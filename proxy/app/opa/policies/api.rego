@@ -2,20 +2,28 @@ package authz
 
 default allow = false
 
-
 allow if {
-  input.path == ["index.php"]
+    input.path[0] == "public"
+}
+allow if {
+    input.path[0] == "docs"
 }
 
 allow if {
-  input.path == ["about.php"]
+    some "index.php" in input.path
 }
 
 allow if {
-  input.path == ["account.php"]
+  some "dashboard.php" in input.path
+  some "finance" in input.roles
 }
 
 allow if {
-  input.path == ["finance.php"]
+  some "accounts.php" in input.path
+  
+}
+
+allow if {
+  some "finance.php" in input.path
 }
 
