@@ -18,12 +18,15 @@ HOP_BY_HOP = {
 }
 
 
-
+import logging
 @router.api_route(
     "{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"]
 )
 async def proxy(path: str, request: Request):
-    upstream_url = f"{config.UPSTREAM_URL}/{path}"
+    UPSTREAM_URL = "http://upstream:81"
+    print(path)
+    logging.info("hello")
+    upstream_url = f"{UPSTREAM_URL}/{path}"
     if request.url.query:
         upstream_url += "?" + request.url.query
 
