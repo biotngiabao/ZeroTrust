@@ -46,6 +46,7 @@ class SimpleLogMiddleware(BaseHTTPMiddleware):
             record["error"] = str(e)
             raise e
 
+        record["risk_score"] = request.state.risk_score
         duration = time.time() - start
         record["duration_ms"] = int(duration * 1000)
 

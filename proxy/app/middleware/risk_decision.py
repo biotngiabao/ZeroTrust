@@ -1,39 +1,68 @@
-import httpx
+# middleware.py
+import time
+from typing import Any, Dict, Optional
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
+from starlette.responses import JSONResponse
+from ..database.sqlite import get_last_seen, upsert_last_seen
 
-_last_seen: dict[str, dict[str, any]] = {}
 
+# Middleware to calculate risk score based on user context changes, such as IP, device, and location.
+# The risk score is added to the request state for downstream processing.
+class CalcRiskMiddleware(BaseHTTPMiddleware):
+    async def _calc_risk_score(
+        self, last_info: Optional[Dict[str, Any]], user: Dict[str, Any]
+    ) -> int:
+        """Compare current user context vs last_seen and assign a score."""
+        print("Last info:", last_info)
+        print("Current user:", user)
 
-class RiskDecisionMiddleware(BaseHTTPMiddleware):
-    def _calc_risk_score(self, user: dict[str, any]) -> int:
         score = 0
-        email = user["email"]
-        last_info = _last_seen.get(email)
+        if not last_info:
+            return score
 
-        if last_info:
-            if last_info["ip"] != user["ip"]:
-                score += 10
-            if last_info["device"] != user["device"]:
-                score += 20
-            if last_info["city"] != user["city"]:
-                score += 20
-            if last_info["country"] != user["country"]:
-                score += 50
+        if last_info.get("ip") != user.get("ip"):
+            score += 10
+        if last_info.get("device") != user.get("device"):
+            score += 20
+        if last_info.get("city") != user.get("city"):
+            score += 20
+        if last_info.get("country") != user.get("country"):
+            score += 50
 
-        return score
+        print("Calculated risk score:", score)
+
+        return min(score, 100)
 
     async def dispatch(self, request: Request, call_next):
-        # Implement risk decision logic here
-        user = request.state.user
+        user: Dict[str, Any] = getattr(request.state, "user", {}) or {}
+        email = user.get("email")
+        ip = user.get("ip")
+        device = user.get("device")
+        country = user.get("country")
+        city = user.get("city")
+
+        if not email or email == "unknown":
+            return await call_next(request)
+
+        last_info = await get_last_seen(request.app.state.db, email)
+
+        # Compute risk
+        risk_score = await self._calc_risk_score(last_info, user)
+        # add risk score to request state
+        request.state.risk_score = risk_score
 
         response = await call_next(request)
 
-        _last_seen[user["email"]] = {
-            "ip": user["ip"],
-            "device": user["device"],
-            "country": user["country"],
-            "city": user["city"],
-        }
+        ts = int(time.time())
+        await upsert_last_seen(
+            request.app.state.db,
+            email=email,
+            ip=ip or "",
+            device=device or "",
+            country=country or "",
+            city=city or "",
+            ts=ts,
+        )
 
         return response
