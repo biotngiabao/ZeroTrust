@@ -1,13 +1,14 @@
 from keycloak import KeycloakOpenID
+from ..common.config import config
 
 
 class KeyCloakService:
     def __init__(self):
         self.keycloak_openid = KeycloakOpenID(
-            server_url="http://keycloak:8080/auth",
-            client_id="fastapi-client",
-            realm_name="fastapi",
-            client_secret_key="payrblPE6NuLZbtncDQRvcx2cqDejazK",
+            server_url=config.KEYCLOAK_SERVER_URL,
+            client_id=config.KEYCLOAK_CLIENT_ID,
+            realm_name=config.KEYCLOAK_REALM_NAME,
+            client_secret_key=config.KEYCLOAK_CLIENT_SECRET_KEY,
         )
         try:
             self.config_well_known = self.keycloak_openid.well_known()

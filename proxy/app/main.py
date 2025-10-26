@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request, Response
 
 from .middleware.logging import SimpleLogMiddleware
-from .middleware.auth import AuthMiddleware
+from .middleware.authorize import AuthorizeMiddleware
+from .middleware.authenticate import AuthenticateMiddleware
 from .router import proxy
 from .keycloak.client import keycloak_service
 from pydantic import BaseModel
@@ -23,7 +24,9 @@ async def get_token(payload: TokenRequest):
     )
 
 
+app.add_middleware(AuthorizeMiddleware)
 app.add_middleware(SimpleLogMiddleware)
-app.add_middleware(AuthMiddleware)
+app.add_middleware(AuthenticateMiddleware)
+
 
 app.include_router(proxy.router)

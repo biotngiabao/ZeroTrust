@@ -23,7 +23,7 @@ HOP_BY_HOP = {
     "{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"]
 )
 async def proxy(path: str, request: Request):
-    upstream_url = f"{config.UPSTREAM_URL}/{path}"
+    upstream_url = f"{config.UPSTREAM_URL}{path}"
     if request.url.query:
         upstream_url += "?" + request.url.query
 

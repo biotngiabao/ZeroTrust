@@ -3,17 +3,18 @@ from ..common.config import config
 
 
 class OPAService:
-    def __init__(self, host="localhost", port=8181):
-        self.client = OpaClient(host=host, port=port)
+    def __init__(self):
+        print(config.OPA_HOST, config.OPA_PORT)
+        self.client = OpaClient(host=config.OPA_HOST, port=config.OPA_PORT)
         if not self.check_connection():
             raise ConnectionError("Failed to connect to OPA server")
         else:
             print("Connected to OPA server")
 
-        self.update_policy_from_file(
-            filepath="/app/app/opa/policies/api.rego",
-            endpoint="authz",
-        )
+        # self.update_policy_from_file(
+        #     filepath="/app/app/opa/policies/api.rego",
+        #     endpoint="authz",
+        # )
 
     def check_connection(self):
         try:
@@ -33,4 +34,4 @@ class OPAService:
         return result.get("result", False)
 
 
-opa_client = OPAService(host="opa", port=8181)
+opa_client = OPAService()
