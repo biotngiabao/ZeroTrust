@@ -30,7 +30,18 @@ class OPAService:
             package_path="authz",
             rule_name="allow",
         )
+        print("OPA query result:", result)
         return result.get("result", False)
+    
+    def get_decision(self, input_data):
+        result = self.client.query_rule(
+            input_data=input_data,
+            package_path="authz",
+            rule_name="decision", 
+        )
+        print("OPA decision result:", result)
+
+        return result
 
 
 opa_client = OPAService(host="opa", port=8181)

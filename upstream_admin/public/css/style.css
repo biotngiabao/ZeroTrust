@@ -1,0 +1,74 @@
+/* Improved UI: sticky footer, professional buttons */
+html,body{margin:0;padding:0}
+
+body{
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:#f3f6fb;
+  color:#111;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+.topbar{
+  background: linear-gradient(90deg,#0b3d91,#075cab);
+  color:white;padding:14px 20px;box-shadow:0 2px 6px rgba(8,35,68,0.12);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-weight:700;font-size:18px}
+.nav{display:flex;gap:8px;align-items:center}
+.container{padding:28px;flex:1 0 auto;max-width:1100px;margin:0 auto;width:100%}
+.footer{
+  background:#ffffff;border-top:1px solid #e6ecf3;padding:16px 20px;font-size:13px;color:#5b6b7a;
+  text-align:center;flex-shrink:0;
+}
+
+/* Card */
+.card{
+  background:#ffffff;padding:18px;border-radius:10px;margin:12px 0;
+  box-shadow:0 6px 18px rgba(12,40,80,0.06);
+}
+
+/* Table */
+.table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+.table th,.table td{border-bottom:1px solid #f1f5f9;padding:12px;text-align:left}
+.table thead th{background:#f8fafc;color:#243240;font-weight:600}
+
+/* Buttons: primary and secondary */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:0;padding:10px 14px;border-radius:8px;
+  font-weight:600;cursor:pointer;transition:all .14s ease;
+  box-shadow:0 4px 10px rgba(11,61,145,0.08);
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  background:linear-gradient(180deg,#0b61d6,#074aa8);color:white;
+}
+.btn-primary:hover{filter:brightness(1.03)}
+.btn-ghost{
+  background:transparent;color:#ffffff;border:1px solid rgba(7,74,168,0.12);
+}
+
+.btn-ghost1{
+  background:transparent;color:#000000;border:1px solid rgba(7,74,168,0.12);
+}
+
+.btn-danger{
+  background:linear-gradient(180deg,#e45757,#c73232);color:white;
+  box-shadow:0 6px 18px rgba(196,57,57,0.12);
+}
+
+/* Form inputs */
+input[type="text"], input[type="email"], input[type="number"], textarea{
+  padding:10px;border:1px solid #e6eef8;border-radius:8px;width:100%;box-sizing:border-box;
+  background:#fff;
+}
+
+/* Notes and small text */
+.note{color:#0b61d6;font-weight:600}
+
+/* Responsive */
+@media (max-width:700px){
+  .nav{flex-wrap:wrap;gap:6px}
+  .container{padding:16px}
+}

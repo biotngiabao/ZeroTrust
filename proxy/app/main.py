@@ -1,8 +1,10 @@
+from .middleware.authenticate import AuthenticateMiddleware
+from .middleware.authorize import AuthorizeMiddleware
 from fastapi import FastAPI, Request, Response,  HTTPException
 
 from .middleware.logging import SimpleLogMiddleware
 
-from .middleware.auth import AuthMiddleware
+# from .middleware.auth import AuthMiddleware
 
 from .router import proxy
 
@@ -48,7 +50,8 @@ async def auth_callback(request: Request, code: str, state: str | None = None):
     except Exception as e:
         return JSONResponse(content={"error": "Failed to obtain token", "detail": str(e)}, status_code=400)
 
+app.add_middleware(AuthorizeMiddleware)
 app.add_middleware(SimpleLogMiddleware)
-app.add_middleware(AuthMiddleware)
+app.add_middleware(AuthenticateMiddleware)
 
 app.include_router(proxy.router)

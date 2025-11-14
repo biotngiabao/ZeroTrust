@@ -47,15 +47,45 @@ services:
     ports:
       - "5432:5432"
 
-  upstream:
+  upstream_public:
     image: php:8.3-cli
-    container_name: upstream
+    container_name: upstream_public
     working_dir: /app
     volumes:
-      - ./upstream:/app
+      - ./upstream_public:/app
     command: php -S 0.0.0.0:81
-    ports:
-      - "81:81"
+    # ports:
+    #   - "81:80"
+
+  upstream_private:
+    image: php:8.3-cli
+    container_name: upstream_private
+    working_dir: /app
+    volumes:
+      - ./upstream_private:/app
+    command: php -S 0.0.0.0:81
+    # ports:
+    #   - "82:80"
+
+  upstream_admin:
+    image: php:8.3-cli
+    container_name: upstream_admin
+    working_dir: /app
+    volumes:
+      - ./upstream_admin:/app
+    command: php -S 0.0.0.0:81
+    # ports:
+    #   - "83:80"
+
+  upstream_server:
+    image: php:8.3-cli
+    container_name: upstream_server
+    working_dir: /app
+    volumes:
+      - ./upstream_server:/app
+    command: php -S 0.0.0.0:81
+    # ports:
+    #   - "84:80"
 
   proxy:
     build: ./proxy
