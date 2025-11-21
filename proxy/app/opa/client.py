@@ -11,10 +11,10 @@ class OPAService:
         else:
             print("Connected to OPA server")
 
-        # self.update_policy_from_file(
-        #     filepath="/app/app/opa/policies/api.rego",
-        #     endpoint="authz",
-        # )
+        self.update_policy_from_file(
+            filepath="/app/app/opa/policies/api.rego",
+            endpoint="authz",
+        )
 
     def check_connection(self):
         try:
@@ -33,12 +33,12 @@ class OPAService:
         )
         print("OPA query result:", result)
         return result.get("result", False)
-    
+
     def get_decision(self, input_data):
         result = self.client.query_rule(
             input_data=input_data,
             package_path="authz",
-            rule_name="decision", 
+            rule_name="decision",
         )
         print("OPA decision result:", result)
 
