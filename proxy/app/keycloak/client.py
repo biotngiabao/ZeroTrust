@@ -31,6 +31,7 @@ class KeyCloakService:
     def get_roles(self, token: str):
         decoded_token = self.decode_token(token)
         return decoded_token.get("realm_access", {}).get("roles", [])
-
-
+    
+    def get_auth_url(self, redirect_uri: str, state: str | None = None) -> str:
+        return self.keycloak_openid.auth_url(redirect_uri=redirect_uri, state=state)
 keycloak_service = KeyCloakService()
