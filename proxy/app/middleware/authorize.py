@@ -37,6 +37,7 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
             "authenticated": user is not None,
             "auth_time": auth_time,
             "key": request.headers.get("key", ""),
+            "score": request.state.risk_score
         }
         # if "data.php" in path:
         # print("path", request.url)
@@ -68,7 +69,8 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
                 )
 
                 auth_url = f"{base_auth_url}&prompt=login"
-                return RedirectResponse(url=auth_url, status_code=303)
+                # return RedirectResponse(url=auth_url, status_code=303)
+                return await call_next(request)
             except Exception as e:
                 logger.error(f"Không thể tạo Keycloak redirect URL cho step-up: {e}")
                 return Response(content="Authentication Required", status_code=401)

@@ -2,12 +2,12 @@
     "alice": {
         "id": 1,
         "name": "Alice Demo",
-        "balance": 15200
+        "balance": 15000
     },
     "bob": {
         "id": 2,
         "name": "Bob Demo",
-        "balance": 2200
+        "balance": 2400
     },
     "admin": {
         "id": 99,

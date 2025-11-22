@@ -43,6 +43,7 @@ class CalcRiskMiddleware(BaseHTTPMiddleware):
         city = user.get("city")
 
         if not email or email == "unknown":
+            request.state.risk_score = 0
             return await call_next(request)
 
         last_info = await get_last_seen(request.app.state.db, email)

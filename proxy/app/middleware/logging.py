@@ -41,20 +41,20 @@ class SimpleLogMiddleware(BaseHTTPMiddleware):
 
         try:
             response = await call_next(request)
-            record["status_code"] = response.status_code
+            record["status_code"] = str(response.status_code)
         except Exception as e:
             record["error"] = str(e)
             raise e
 
         record["risk_score"] = request.state.risk_score
         duration = time.time() - start
-        record["duration_ms"] = int(duration * 1000)
+        record["duration_ms"] = str(duration * 1000)
 
         # copy user info from request.state
         for attr in request.state.user:
             record[attr] = request.state.user.get(attr)
 
-        if "error" in record or record.get("status_code", 500) >= 400:
+        if "error" in record or int(record.get("status_code", 500)) >= 400:
             logger.error(record)
         else:
             logger.info(record)
