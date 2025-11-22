@@ -2,7 +2,7 @@ from .middleware.authenticate import AuthenticateMiddleware
 from .middleware.authorize import AuthorizeMiddleware
 from fastapi import FastAPI, Request, Response, HTTPException
 
-from .middleware.logging import SimpleLogMiddleware
+from .middleware.logging import LogMiddleware
 from .middleware.authorize import AuthorizeMiddleware
 from .middleware.authenticate import AuthenticateMiddleware
 from .middleware.risk_decision import CalcRiskMiddleware
@@ -72,7 +72,7 @@ async def auth_callback(request: Request, code: str, state: str | None = None):
 
 
 app.add_middleware(AuthorizeMiddleware)
-app.add_middleware(SimpleLogMiddleware)
+app.add_middleware(LogMiddleware)
 app.add_middleware(CalcRiskMiddleware)
 app.add_middleware(AuthenticateMiddleware)
 

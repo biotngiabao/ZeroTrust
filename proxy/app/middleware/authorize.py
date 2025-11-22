@@ -9,8 +9,6 @@ import base64
 from ..opa.client import opa_client
 from ..keycloak.client import keycloak_service
 
-logger = logging.getLogger(__name__)
-
 
 class AuthorizeMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -37,7 +35,7 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
             "authenticated": user is not None,
             "auth_time": auth_time,
             "key": request.headers.get("key", ""),
-            "score": request.state.risk_score
+            "score": request.state.risk_score,
         }
         # if "data.php" in path:
         # print("path", request.url)
@@ -50,7 +48,7 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
 
             action = decision.get("action", "deny_forbidden")
         except Exception as e:
-            logger.error(f"Không thể lấy quyết định OPA: {e}")
+            print(f"Không thể lấy quyết định OPA: {e}")
             action = "deny_forbidden"
 
         if action == "allow":
@@ -58,7 +56,7 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
 
         # 2.2: OPA yêu cầu "step-up"
         elif action == "deny_step_up":
-            logger.info(f"OPA yêu cầu step-up cho: {path}")
+            print(f"OPA yêu cầu step-up cho: {path}")
             try:
                 original_url = base64.urlsafe_b64encode(
                     str(request.url).encode()
@@ -72,13 +70,11 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
                 # return RedirectResponse(url=auth_url, status_code=303)
                 return await call_next(request)
             except Exception as e:
-                logger.error(f"Không thể tạo Keycloak redirect URL cho step-up: {e}")
+                print(f"Không thể tạo Keycloak redirect URL cho step-up: {e}")
                 return Response(content="Authentication Required", status_code=401)
 
         elif action == "deny_unauthorized":
-            logger.warning(
-                f"OPA Denied (401): {request.method} {path} for user anonymous"
-            )
+            print(f"OPA Denied (401): {request.method} {path} for user anonymous")
             try:
                 original_url = base64.urlsafe_b64encode(
                     str(request.url).encode()
@@ -89,11 +85,11 @@ class AuthorizeMiddleware(BaseHTTPMiddleware):
                 )
                 return RedirectResponse(url=auth_url, status_code=303)
             except Exception as e:
-                logger.error(f"Không thể tạo Keycloak redirect URL: {e}")
+                print(f"Không thể tạo Keycloak redirect URL: {e}")
                 return Response(content="Authentication Required", status_code=401)
 
         else:
-            logger.warning(
+            print(
                 f"OPA Denied (403): {request.method} {path} for user {email or 'anonymous'}"
             )
             return Response(content="Forbidden", status_code=403)

@@ -25,7 +25,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
 
-class SimpleLogMiddleware(BaseHTTPMiddleware):
+class LogMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # skip logging for public paths
         if request.url.path.startswith("/static/") or request.url.path.startswith(
