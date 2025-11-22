@@ -23,10 +23,10 @@ class CalcRiskMiddleware(BaseHTTPMiddleware):
 
         if last_info.get("ip") != user.get("ip"):
             score += 10
-        if last_info.get("device") != user.get("device"):
-            score += 20
         if last_info.get("city") != user.get("city"):
             score += 20
+        if last_info.get("device") != user.get("device"):
+            score += 30
         if last_info.get("country") != user.get("country"):
             score += 50
 

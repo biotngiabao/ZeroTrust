@@ -30,10 +30,13 @@ class TokenRequest(BaseModel):
 
 @app.post("/token")
 async def get_token(payload: TokenRequest):
-    return keycloak_service.get_token(
-        username=payload.username,
-        password=payload.password,
-    )
+    try:
+        return keycloak_service.get_token(
+            username=payload.username,
+            password=payload.password,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to obtain token: {e}")
 
 
 @app.get("/auth/callback", name="auth_callback")

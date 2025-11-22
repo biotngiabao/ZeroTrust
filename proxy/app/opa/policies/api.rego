@@ -13,7 +13,10 @@ public_paths = {
     "about.php",
     "contact.php",
     "public",       
-    "favicon.ico"
+    "favicon.ico",
+    "docs",
+    "openapi.json",
+    "token"
 }
 
 private_user_paths = {
