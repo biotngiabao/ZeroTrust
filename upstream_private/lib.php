@@ -8,9 +8,9 @@
 function callDataService($method, $resource, $data = null) {
     $url = 'http://host.docker.internal:8000/data.php?resource=' . urlencode($resource);
     
-    $token = $_COOKIE['access_token'] ?? '';
+    $token = $_COOKIE['access_token']?? '';
     // echo $token;
-    $service_key = 'fmsbgfijbrgijwefojcnsojnfiwjnfoknkwjgb'; 
+    $service_key = 'fmsbgfijbrgijwefojcnsojnfiwjnfokn'; 
 
     $headers = [
         'Key: ' . $service_key

@@ -1,6 +1,6 @@
 package authz
 
-max_auth_age_seconds = 10
+max_auth_age_seconds = 60
 
 default decision = {
     "allow": false,
