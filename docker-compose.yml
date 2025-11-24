@@ -54,8 +54,8 @@ services:
     volumes:
       - ./upstream_public:/app
     command: php -S 0.0.0.0:81
-    # ports:
-    #   - "81:80"
+    ports:
+      - "81:81"
 
   upstream_private:
     image: php:8.3-cli
@@ -64,8 +64,8 @@ services:
     volumes:
       - ./upstream_private:/app
     command: php -S 0.0.0.0:81
-    # ports:
-    #   - "82:80"
+    ports:
+      - "82:81"
 
   upstream_admin:
     image: php:8.3-cli
@@ -74,8 +74,8 @@ services:
     volumes:
       - ./upstream_admin:/app
     command: php -S 0.0.0.0:81
-    # ports:
-    #   - "83:80"
+    ports:
+      - "83:81"
 
   upstream_server:
     image: php:8.3-cli
@@ -84,8 +84,8 @@ services:
     volumes:
       - ./upstream_server:/app
     command: php -S 0.0.0.0:81
-    # ports:
-    #   - "84:80"
+    ports:
+      - "84:81"
 
   proxy:
     build: ./proxy

@@ -3,8 +3,9 @@ from ..common.config import config
 
 
 class OPAService:
-    def __init__(self, host="localhost", port=8181):
-        self.client = OpaClient(host=host, port=port)
+    def __init__(self):
+        print("OPA config ", config.OPA_HOST, config.OPA_PORT)
+        self.client = OpaClient(host=config.OPA_HOST, port=config.OPA_PORT)
         if not self.check_connection():
             raise ConnectionError("Failed to connect to OPA server")
         else:
@@ -32,16 +33,16 @@ class OPAService:
         )
         print("OPA query result:", result)
         return result.get("result", False)
-    
+
     def get_decision(self, input_data):
         result = self.client.query_rule(
             input_data=input_data,
             package_path="authz",
-            rule_name="decision", 
+            rule_name="decision",
         )
         print("OPA decision result:", result)
 
         return result
 
 
-opa_client = OPAService(host="opa", port=8181)
+opa_client = OPAService()

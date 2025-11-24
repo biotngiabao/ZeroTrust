@@ -1,13 +1,14 @@
 from keycloak import KeycloakOpenID
-
+from ..common.config import config
+import urllib.parse
 
 class KeyCloakService:
     def __init__(self):
         self.keycloak_openid = KeycloakOpenID(
-            server_url="http://keycloak:8080",
-            client_id="PGT",
-            realm_name="PGT",
-            client_secret_key="km7whmkbJLCFMIk5OmfVtjlKasR4ZwL9",
+            server_url=config.KEYCLOAK_SERVER_URL,
+            client_id=config.KEYCLOAK_CLIENT_ID,
+            realm_name=config.KEYCLOAK_REALM_NAME,
+            client_secret_key=config.KEYCLOAK_CLIENT_SECRET_KEY,
         )
         try:
             self.config_well_known = self.keycloak_openid.well_known()
@@ -33,4 +34,13 @@ class KeyCloakService:
     
     def get_auth_url(self, redirect_uri: str, state: str | None = None) -> str:
         return self.keycloak_openid.auth_url(redirect_uri=redirect_uri, state=state)
+    
+    def get_logout_url(self):
+        """
+        Tạo URL để redirect user sang Keycloak logout
+        """
+        base_url = f"http://localhost:8080/realms/PGT/protocol/openid-connect/logout"
+    
+        
+        return f"{base_url}"
 keycloak_service = KeyCloakService()
