@@ -11,7 +11,7 @@
         "allow": false,
         "action": "deny_forbidden"
     } if {
-        input.score >= 100,
+        input.score >= 100
         not public_paths[input.path[0]]
     }
 
